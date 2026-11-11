@@ -37,3 +37,7 @@ GitHub REST search repositories per_page=100：TextGrid/Praat/speech annotation/
 ## 限制与权利
 
 在上述已记录检索范围内未发现成熟直接替代，非绝对唯一性或官方裁决。索引可能延迟，未公开代码不可审；官方 raw.githubusercontent.com 直连失败改用已绑定 GitHub API，只读获取原文件。引用规格和参考程序行为，不复制 GPL/MIT 上游代码、样本或文案；原创 MIT 实现与自制合成语料。
+
+## 发布前反向复核（2026-11-11）
+
+在实现完成、创建远端之前，使用本项目绑定的 Zh666-lab 身份重新查询 GitHub 仓库：`TextGrid language:MoonBit` 为 0，`Praat language:MoonBit` 为 1（仍为 wrinh/ngan），`IntervalTier language:MoonBit` 为 0，`moontextgrid` 为 0；均返回 incomplete_results=false。MoonCakes 再查 TextGrid、Praat、IntervalTier、annotation grid（limit=100），未出现与本项目同输入、同核心模型和同编辑/交换工作流的直接替代。annotation grid 中的图像增强、绘图与合成视觉项目不是语言时间层处理。该结论受索引和可访问范围限制，不代表生态绝对唯一，也不是主办方查重认定。原始命令与结果保存在仓库外本次交付目录。
