@@ -44,11 +44,15 @@ pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise Grid
 
 pub fn map_labels(Tier, (String) -> String) -> Tier raise GridError
 
+pub fn masked_intervals(Tier, Tier, String) -> Array[Interval] raise GridError
+
 pub fn merge_intervals(Tier, Int32, Int32, String) -> Tier raise GridError
 
 pub fn move_boundary(Tier, Int32, Double) -> Tier raise GridError
 
 pub fn move_point(Tier, Int32, Double) -> Tier raise GridError
+
+pub fn overlaps(Tier, Tier) -> Array[Overlap] raise GridError
 
 pub fn parse_bytes(Bytes, limits? : Limits) -> Grid raise GridError
 
@@ -126,6 +130,16 @@ pub(all) struct Limits {
 pub fn Limits::equal(Self, Self) -> Bool
 pub fn Limits::not_equal(Self, Self) -> Bool
 pub fn Limits::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Overlap {
+  start : Double
+  end : Double
+  left : String
+  right : String
+} derive(Eq, @debug.Debug)
+pub fn Overlap::equal(Self, Self) -> Bool
+pub fn Overlap::not_equal(Self, Self) -> Bool
+pub fn Overlap::to_repr(Self) -> @debug.Repr
 
 pub(all) struct Point {
   time : Double
