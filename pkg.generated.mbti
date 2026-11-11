@@ -14,6 +14,8 @@ pub fn copy_grid(Grid) -> Grid
 
 pub fn copy_tier(Tier) -> Tier
 
+pub fn crop(Grid, Double, Double, rebase_to_zero? : Bool) -> Grid raise GridError
+
 pub fn decode_text(Bytes, max_units? : Int32) -> String raise GridError
 
 pub fn default_limits() -> Limits
