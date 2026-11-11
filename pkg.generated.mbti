@@ -30,9 +30,13 @@ pub fn grid(Double, Double, Array[Tier]) -> Grid raise GridError
 
 pub fn insert_point(Tier, Double, String) -> Tier raise GridError
 
+pub fn insert_tier(Grid, Int32, Tier) -> Grid raise GridError
+
 pub fn interval_at(Tier, Double) -> Interval? raise GridError
 
 pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise GridError
+
+pub fn map_labels(Tier, (String) -> String) -> Tier raise GridError
 
 pub fn merge_intervals(Tier, Int32, Int32, String) -> Tier raise GridError
 
@@ -51,6 +55,12 @@ pub fn points_between(Tier, Double, Double) -> Array[Point] raise GridError
 pub fn relabel_interval(Tier, Int32, String) -> Tier raise GridError
 
 pub fn relabel_point(Tier, Int32, String) -> Tier raise GridError
+
+pub fn remove_tier(Grid, Int32) -> Grid raise GridError
+
+pub fn rename_tier(Tier, String) -> Tier raise GridError
+
+pub fn replace_tier(Grid, Int32, Tier) -> Grid raise GridError
 
 pub fn select_tiers(Grid, Array[Int32]) -> Grid raise GridError
 
