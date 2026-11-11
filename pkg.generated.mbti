@@ -10,11 +10,17 @@ pub fn copy_grid(Grid) -> Grid
 
 pub fn copy_tier(Tier) -> Tier
 
+pub fn decode_text(Bytes, max_units? : Int32) -> String raise GridError
+
 pub fn default_limits() -> Limits
+
+pub fn encode_text(String, encoding? : TextEncoding) -> Bytes
 
 pub fn grid(Double, Double, Array[Tier]) -> Grid raise GridError
 
 pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise GridError
+
+pub fn parse_bytes(Bytes, limits? : Limits) -> Grid raise GridError
 
 pub fn parse_text(String, limits? : Limits) -> Grid raise GridError
 
@@ -25,6 +31,8 @@ pub fn tier_name(Tier) -> String
 pub fn validate(Grid) -> Unit raise GridError
 
 pub fn validate_tier(Tier) -> Unit raise GridError
+
+pub fn write_bytes(Grid, encoding? : TextEncoding, short? : Bool) -> Bytes raise GridError
 
 pub fn write_long(Grid) -> String raise GridError
 
@@ -72,6 +80,15 @@ pub(all) struct Point {
 pub fn Point::equal(Self, Self) -> Bool
 pub fn Point::not_equal(Self, Self) -> Bool
 pub fn Point::to_repr(Self) -> @debug.Repr
+
+pub(all) enum TextEncoding {
+  Utf8
+  Utf16LE
+  Utf16BE
+} derive(Eq, @debug.Debug)
+pub fn TextEncoding::equal(Self, Self) -> Bool
+pub fn TextEncoding::not_equal(Self, Self) -> Bool
+pub fn TextEncoding::to_repr(Self) -> @debug.Repr
 
 pub(all) enum Tier {
   Intervals(String, Double, Double, Array[Interval])
