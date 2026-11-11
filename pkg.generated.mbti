@@ -10,6 +10,8 @@ pub fn affine(Grid, Double, Double, Double) -> Grid raise GridError
 
 pub fn agreement(Tier, Tier) -> Agreement raise GridError
 
+pub fn boundaries(Tier) -> Tier raise GridError
+
 pub fn coalesce(Tier) -> Tier raise GridError
 
 pub fn concatenate(Grid, Grid) -> Grid raise GridError
@@ -51,6 +53,10 @@ pub fn longest_intervals(Tier, Int32, include_empty? : Bool) -> Array[Interval] 
 pub fn map_labels(Tier, (String) -> String) -> Tier raise GridError
 
 pub fn masked_intervals(Tier, Tier, String) -> Array[Interval] raise GridError
+
+pub fn match_boundaries(Tier, Tier, Double) -> MatchSummary raise GridError
+
+pub fn match_points(Tier, Tier, Double) -> MatchSummary raise GridError
 
 pub fn merge_intervals(Tier, Int32, Int32, String) -> Tier raise GridError
 
@@ -169,6 +175,18 @@ pub fn Limits::equal(Self, Self) -> Bool
 pub fn Limits::not_equal(Self, Self) -> Bool
 pub fn Limits::to_repr(Self) -> @debug.Repr
 
+pub(all) struct MatchSummary {
+  matches : Array[PointMatch]
+  reference_count : Int32
+  hypothesis_count : Int32
+  precision : Double
+  recall : Double
+  f1 : Double
+} derive(Eq, @debug.Debug)
+pub fn MatchSummary::equal(Self, Self) -> Bool
+pub fn MatchSummary::not_equal(Self, Self) -> Bool
+pub fn MatchSummary::to_repr(Self) -> @debug.Repr
+
 pub(all) struct Overlap {
   start : Double
   end : Double
@@ -186,6 +204,16 @@ pub(all) struct Point {
 pub fn Point::equal(Self, Self) -> Bool
 pub fn Point::not_equal(Self, Self) -> Bool
 pub fn Point::to_repr(Self) -> @debug.Repr
+
+pub(all) struct PointMatch {
+  reference_index : Int32
+  hypothesis_index : Int32
+  delta : Double
+  same_label : Bool
+} derive(Eq, @debug.Debug)
+pub fn PointMatch::equal(Self, Self) -> Bool
+pub fn PointMatch::not_equal(Self, Self) -> Bool
+pub fn PointMatch::to_repr(Self) -> @debug.Repr
 
 pub(all) enum TextEncoding {
   Utf8
