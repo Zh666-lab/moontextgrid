@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  portable:
+    name: check-test-build (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [wasm-gc, wasm, js, native]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install verified MoonBit 0.10.16 and matching core
+        run: |
+          bash scripts/install-moon.sh "$RUNNER_TEMP/moontextgrid-toolchain"
+          echo "MOON_HOME=$RUNNER_TEMP/moontextgrid-toolchain" >> "$GITHUB_ENV"
+          echo "MOON_TOOLCHAIN_ROOT=$RUNNER_TEMP/moontextgrid-toolchain" >> "$GITHUB_ENV"
+          echo "$RUNNER_TEMP/moontextgrid-toolchain/bin" >> "$GITHUB_PATH"
+      - name: Generated interface and formatting
+        run: |
+          moon info
+          moon fmt --check
+          git diff --exit-code
+      - name: Strict check, tests and build
+        run: |
+          moon check --deny-warn --target ${{ matrix.target }}
+          moon test --deny-warn --target ${{ matrix.target }}
+          moon build --deny-warn --target ${{ matrix.target }}
+      - name: Three complete workflows
+        run: |
+          moon run examples/import --target ${{ matrix.target }}
+          moon run examples/clips --target ${{ matrix.target }}
+          moon run examples/evaluate --target ${{ matrix.target }}
+      - name: Independent TextGridTools interoperability
+        if: matrix.target == 'wasm-gc'
+        run: |
+          python3 -m venv "$RUNNER_TEMP/oracle"
+          "$RUNNER_TEMP/oracle/bin/pip" install -r tools/oracle-requirements.txt
+          "$RUNNER_TEMP/oracle/bin/python" tools/differential.py
