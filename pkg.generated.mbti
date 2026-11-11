@@ -6,6 +6,8 @@ import {
 }
 
 // Values
+pub fn affine(Grid, Double, Double, Double) -> Grid raise GridError
+
 pub fn coalesce(Tier) -> Tier raise GridError
 
 pub fn copy_grid(Grid) -> Grid
@@ -52,6 +54,8 @@ pub fn point_tier(String, Double, Double, Array[Point]) -> Tier raise GridError
 
 pub fn points_between(Tier, Double, Double) -> Array[Point] raise GridError
 
+pub fn rebase(Grid, Double) -> Grid raise GridError
+
 pub fn relabel_interval(Tier, Int32, String) -> Tier raise GridError
 
 pub fn relabel_point(Tier, Int32, String) -> Tier raise GridError
@@ -62,7 +66,11 @@ pub fn rename_tier(Tier, String) -> Tier raise GridError
 
 pub fn replace_tier(Grid, Int32, Tier) -> Grid raise GridError
 
+pub fn scale(Grid, Double) -> Grid raise GridError
+
 pub fn select_tiers(Grid, Array[Int32]) -> Grid raise GridError
+
+pub fn shift(Grid, Double) -> Grid raise GridError
 
 pub fn split_interval(Tier, Double, String, String) -> Tier raise GridError
 
