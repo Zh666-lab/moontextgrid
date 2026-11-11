@@ -10,6 +10,8 @@ pub fn affine(Grid, Double, Double, Double) -> Grid raise GridError
 
 pub fn coalesce(Tier) -> Tier raise GridError
 
+pub fn concatenate(Grid, Grid) -> Grid raise GridError
+
 pub fn copy_grid(Grid) -> Grid
 
 pub fn copy_tier(Tier) -> Tier
