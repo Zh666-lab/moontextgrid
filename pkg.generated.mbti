@@ -6,6 +6,8 @@ import {
 }
 
 // Values
+pub fn coalesce(Tier) -> Tier raise GridError
+
 pub fn copy_grid(Grid) -> Grid
 
 pub fn copy_tier(Tier) -> Tier
@@ -28,6 +30,10 @@ pub fn interval_at(Tier, Double) -> Interval? raise GridError
 
 pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise GridError
 
+pub fn merge_intervals(Tier, Int32, Int32, String) -> Tier raise GridError
+
+pub fn move_boundary(Tier, Int32, Double) -> Tier raise GridError
+
 pub fn parse_bytes(Bytes, limits? : Limits) -> Grid raise GridError
 
 pub fn parse_text(String, limits? : Limits) -> Grid raise GridError
@@ -36,7 +42,11 @@ pub fn point_tier(String, Double, Double, Array[Point]) -> Tier raise GridError
 
 pub fn points_between(Tier, Double, Double) -> Array[Point] raise GridError
 
+pub fn relabel_interval(Tier, Int32, String) -> Tier raise GridError
+
 pub fn select_tiers(Grid, Array[Int32]) -> Grid raise GridError
+
+pub fn split_interval(Tier, Double, String, String) -> Tier raise GridError
 
 pub fn tier_bounds(Tier) -> (Double, Double)
 
