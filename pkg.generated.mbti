@@ -16,7 +16,15 @@ pub fn default_limits() -> Limits
 
 pub fn encode_text(String, encoding? : TextEncoding) -> Bytes
 
+pub fn entry_count(Tier) -> Int32
+
+pub fn find_tiers(Grid, String) -> Array[Int32]
+
+pub fn get_tier(Grid, Int32) -> Tier raise GridError
+
 pub fn grid(Double, Double, Array[Tier]) -> Grid raise GridError
+
+pub fn interval_at(Tier, Double) -> Interval? raise GridError
 
 pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise GridError
 
@@ -25,6 +33,12 @@ pub fn parse_bytes(Bytes, limits? : Limits) -> Grid raise GridError
 pub fn parse_text(String, limits? : Limits) -> Grid raise GridError
 
 pub fn point_tier(String, Double, Double, Array[Point]) -> Tier raise GridError
+
+pub fn points_between(Tier, Double, Double) -> Array[Point] raise GridError
+
+pub fn select_tiers(Grid, Array[Int32]) -> Grid raise GridError
+
+pub fn tier_bounds(Tier) -> (Double, Double)
 
 pub fn tier_name(Tier) -> String
 
