@@ -16,6 +16,8 @@ pub fn grid(Double, Double, Array[Tier]) -> Grid raise GridError
 
 pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise GridError
 
+pub fn parse_text(String, limits? : Limits) -> Grid raise GridError
+
 pub fn point_tier(String, Double, Double, Array[Point]) -> Tier raise GridError
 
 pub fn tier_name(Tier) -> String
