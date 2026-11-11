@@ -1,0 +1,5 @@
+import {
+  "Zh666-lab/moontextgrid" @tg,
+}
+
+pkgtype(kind: "executable")
