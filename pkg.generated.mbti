@@ -26,6 +26,10 @@ pub fn validate(Grid) -> Unit raise GridError
 
 pub fn validate_tier(Tier) -> Unit raise GridError
 
+pub fn write_long(Grid) -> String raise GridError
+
+pub fn write_short(Grid) -> String raise GridError
+
 // Errors
 pub suberror GridError {
   Invalid(String)
