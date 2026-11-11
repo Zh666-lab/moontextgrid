@@ -70,6 +70,8 @@ pub fn overlaps(Tier, Tier) -> Array[Overlap] raise GridError
 
 pub fn parse_bytes(Bytes, limits? : Limits) -> Grid raise GridError
 
+pub fn parse_csv(String, limits? : Limits) -> Grid raise GridError
+
 pub fn parse_json(String, limits? : Limits) -> Grid raise GridError
 
 pub fn parse_text(String, limits? : Limits) -> Grid raise GridError
@@ -111,6 +113,8 @@ pub fn validate(Grid) -> Unit raise GridError
 pub fn validate_tier(Tier) -> Unit raise GridError
 
 pub fn write_bytes(Grid, encoding? : TextEncoding, short? : Bool) -> Bytes raise GridError
+
+pub fn write_csv(Grid) -> String raise GridError
 
 pub fn write_json(Grid) -> String raise GridError
 
