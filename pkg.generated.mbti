@@ -8,6 +8,8 @@ import {
 // Values
 pub fn affine(Grid, Double, Double, Double) -> Grid raise GridError
 
+pub fn agreement(Tier, Tier) -> Agreement raise GridError
+
 pub fn coalesce(Tier) -> Tier raise GridError
 
 pub fn concatenate(Grid, Grid) -> Grid raise GridError
@@ -109,6 +111,27 @@ pub suberror GridError {
 pub fn GridError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
+pub(all) struct Agreement {
+  duration : Double
+  matching_duration : Double
+  observed : Double
+  expected : Double
+  kappa : Double?
+  confusion : Array[Confusion]
+} derive(Eq, @debug.Debug)
+pub fn Agreement::equal(Self, Self) -> Bool
+pub fn Agreement::not_equal(Self, Self) -> Bool
+pub fn Agreement::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Confusion {
+  reference : String
+  hypothesis : String
+  duration : Double
+} derive(Eq, @debug.Debug)
+pub fn Confusion::equal(Self, Self) -> Bool
+pub fn Confusion::not_equal(Self, Self) -> Bool
+pub fn Confusion::to_repr(Self) -> @debug.Repr
+
 pub(all) struct Grid {
   start : Double
   end : Double
