@@ -59,5 +59,32 @@ pub fn scale(g : Grid, factor : Double) -> Grid raise GridError {
 pub fn rebase(g : Grid, new_start : Double) -> Grid raise GridError {
   validate(g)
   guard finite(new_start) else { raise Invalid("nonfinite target origin") }
-  affine(g, g.start, 1, new_start - g.start)
+  let f = fn(t : Double) { new_start + (t - g.start) }
+  let end = f(g.end)
+  let tiers : Array[Tier] = []
+  for t in g.tiers {
+    match t {
+      Intervals(n, _, _, xs) =>
+        tiers.push(
+          interval_tier(
+            n,
+            new_start,
+            end,
+            xs.map(fn(x) {
+              { start: f(x.start), end: f(x.end), label: x.label, }
+            }),
+          ),
+        )
+      Points(n, _, _, xs) =>
+        tiers.push(
+          point_tier(
+            n,
+            new_start,
+            end,
+            xs.map(fn(x) { { time: f(x.time), label: x.label, } }),
+          ),
+        )
+    }
+  }
+  grid(new_start, end, tiers)
 }
