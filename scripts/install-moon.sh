@@ -10,6 +10,14 @@ curl --fail --location --retry 2 --connect-timeout 15 --max-time 240 'https://cl
 curl --fail --location --retry 2 --connect-timeout 15 --max-time 120 'https://cli.moonbitlang.com/cores/core-0.10.16%2Bb1a0e846e.tar.gz' -o "$work/core.tar.gz"
 printf '%s  %s\n' '84ae424cd31bc485d2cf4d3736534e52f2f265ceafb562a187b9ab26d9566212' "$work/moon.tar.gz" 'e7db6e3c80a97af953598b374cf14f3e330918b1ca4659b141b9f550c9c0adb0' "$work/core.tar.gz" | sha256sum --check
 tar -xzf "$work/moon.tar.gz" -C "$root"
+# Archived executables may lack their execute bit; normalize only known tools.
+for tool in moon moonc moonrun mooncake moonfmt mooninfo moon-wasm-opt moon-cove-report moon_cove_report moonc-prove moon-cram moondoc moon-lsp moon-ide internal/tcc; do
+  if [[ -f "$root/bin/$tool" ]]; then chmod u+x "$root/bin/$tool"; fi
+done
 mkdir -p "$root/lib"
 tar -xzf "$work/core.tar.gz" -C "$root/lib"
-MOON_HOME="$root" MOON_TOOLCHAIN_ROOT="$root" "$root/bin/moon" version --all
+root="$(cd "$root" && pwd)"
+export MOON_HOME="$root" MOON_TOOLCHAIN_ROOT="$root"
+export PATH="$root/bin:$PATH"
+moon version --all
+(cd "$root/lib/core" && moon bundle --all)
