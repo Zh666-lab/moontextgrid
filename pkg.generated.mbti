@@ -1,0 +1,80 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Zh666-lab/moontextgrid"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn copy_grid(Grid) -> Grid
+
+pub fn copy_tier(Tier) -> Tier
+
+pub fn default_limits() -> Limits
+
+pub fn grid(Double, Double, Array[Tier]) -> Grid raise GridError
+
+pub fn interval_tier(String, Double, Double, Array[Interval]) -> Tier raise GridError
+
+pub fn point_tier(String, Double, Double, Array[Point]) -> Tier raise GridError
+
+pub fn tier_name(Tier) -> String
+
+pub fn validate(Grid) -> Unit raise GridError
+
+pub fn validate_tier(Tier) -> Unit raise GridError
+
+// Errors
+pub suberror GridError {
+  Invalid(String)
+} derive(@debug.Debug)
+pub fn GridError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub(all) struct Grid {
+  start : Double
+  end : Double
+  tiers : Array[Tier]
+} derive(Eq, @debug.Debug)
+pub fn Grid::equal(Self, Self) -> Bool
+pub fn Grid::not_equal(Self, Self) -> Bool
+pub fn Grid::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Interval {
+  start : Double
+  end : Double
+  label : String
+} derive(Eq, @debug.Debug)
+pub fn Interval::equal(Self, Self) -> Bool
+pub fn Interval::not_equal(Self, Self) -> Bool
+pub fn Interval::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Limits {
+  input_units : Int32
+  tokens : Int32
+  tiers : Int32
+  entries : Int32
+} derive(Eq, @debug.Debug)
+pub fn Limits::equal(Self, Self) -> Bool
+pub fn Limits::not_equal(Self, Self) -> Bool
+pub fn Limits::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Point {
+  time : Double
+  label : String
+} derive(Eq, @debug.Debug)
+pub fn Point::equal(Self, Self) -> Bool
+pub fn Point::not_equal(Self, Self) -> Bool
+pub fn Point::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Tier {
+  Intervals(String, Double, Double, Array[Interval])
+  Points(String, Double, Double, Array[Point])
+} derive(Eq, @debug.Debug)
+pub fn Tier::equal(Self, Self) -> Bool
+pub fn Tier::not_equal(Self, Self) -> Bool
+pub fn Tier::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits
