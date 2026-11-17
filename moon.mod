@@ -1,6 +1,6 @@
 name = "Zh666-lab/moontextgrid"
 
-version = "0.1.0"
+version = "0.2.0"
 
 readme = "README.md"
 
@@ -10,4 +10,4 @@ license = "MIT"
 
 keywords = [ "praat", "textgrid", "speech", "annotation", "corpus" ]
 
-description = "纯 MoonBit Praat 时间标注：格式读写、编辑、裁剪拼接、对比与数据导出"
+description = "纯 MoonBit Praat 时间标注：弱域文档兼容、显式桥接、编辑、裁剪拼接、对比与数据导出"

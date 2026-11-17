@@ -33,14 +33,21 @@ jobs:
           moon check --deny-warn --target ${{ matrix.target }}
           moon test --deny-warn --target ${{ matrix.target }}
           moon build --deny-warn --target ${{ matrix.target }}
-      - name: Three complete workflows
+      - name: Four complete workflows
         run: |
           moon run examples/import --target ${{ matrix.target }}
           moon run examples/clips --target ${{ matrix.target }}
           moon run examples/evaluate --target ${{ matrix.target }}
+          moon run examples/compatibility --target ${{ matrix.target }}
       - name: Independent TextGridTools interoperability
         if: matrix.target == 'wasm-gc'
         run: |
           python3 -m venv "$RUNNER_TEMP/oracle"
           "$RUNNER_TEMP/oracle/bin/pip" install -r tools/oracle-requirements.txt
           "$RUNNER_TEMP/oracle/bin/python" tools/differential.py
+      - name: Actual Praat weak-domain interoperability
+        if: matrix.target == 'wasm-gc'
+        run: |
+          python3 -m venv "$RUNNER_TEMP/praat"
+          "$RUNNER_TEMP/praat/bin/pip" install -r tools/praat-requirements.txt
+          "$RUNNER_TEMP/praat/bin/python" tools/praat_differential.py

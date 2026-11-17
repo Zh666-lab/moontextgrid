@@ -13,3 +13,5 @@
 `oracle_wbtest.mbt` 中的标注是 tools/differential.py 构造的原创合成数据，经外部程序序列化获得测试输入；非上游测试数据。外部参考的安装由用户/CI 使用其官方发行包和原许可证，仓库没有 vendor 目录。
 
 AI 用于选题检索、设计、实现、调试、测试和文档。它不能证明绝对唯一、没有缺陷或官方验收通过；可复现依据为代码、测试与 CI。
+
+实际 Praat 引擎验证使用 Parselmouth 0.4.6（GPL-3.0，https://github.com/YannickJadoul/Parselmouth），其内嵌 Praat 6.1.38。仅作为可选开发/CI 外部测试进程依赖，不复制或链接到 MoonBit 库；仓库中的测试向量由本项目原创合成并由参考引擎输出，不包含上游语料。Windows 参考输出 CRLF 在生成跨平台向量时统一为 LF。

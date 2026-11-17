@@ -1,8 +1,8 @@
 ///|
-pub fn parse_text(
+pub fn parse_document(
   text : String,
   limits~ : Limits = default_limits(),
-) -> Grid raise GridError {
+) -> Document raise GridError {
   let r = Reader::{ tokens: tokenize(text, limits), pos: 0, }
   let header = r.string()
   guard header == "ooTextFile" || header == "ooTextFile short" else {
@@ -11,7 +11,7 @@ pub fn parse_text(
   guard r.string() == "TextGrid" else { raise Invalid("not a TextGrid object") }
   let a = r.number()
   let b = r.number()
-  span(a, b)
+  document_domain(a, b)
   let presence = r.take()
   guard !presence.quoted else { raise Invalid("expected tier presence flag") }
   let tiers : Array[Tier] = []
@@ -34,7 +34,7 @@ pub fn parse_text(
             let label = r.string()
             xs.push({ start: lo, end: hi, label, })
           }
-          tiers.push(interval_tier(name, start, end, xs))
+          tiers.push(Intervals(name, start, end, xs))
         }
         "TextTier" => {
           let xs : Array[Point] = []
@@ -43,7 +43,7 @@ pub fn parse_text(
             let label = r.string()
             xs.push({ time, label, })
           }
-          tiers.push(point_tier(name, start, end, xs))
+          tiers.push(Points(name, start, end, xs))
         }
         _ => raise Invalid("unsupported tier class")
       }
@@ -56,5 +56,15 @@ pub fn parse_text(
   guard r.pos == r.tokens.length() else {
     raise Invalid("unexpected trailing data")
   }
-  grid(a, b, tiers)
+  document(a, b, tiers)
+}
+
+///|
+/// Strict editing parser retained for compatibility. Use parse_document to
+/// preserve official text files whose declared domains do not coincide.
+pub fn parse_text(
+  text : String,
+  limits~ : Limits = default_limits(),
+) -> Grid raise GridError {
+  document_to_grid(parse_document(text, limits~)).grid
 }

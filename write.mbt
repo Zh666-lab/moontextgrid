@@ -16,8 +16,7 @@ fn quote_text(s : String) -> String {
 
 ///|
 /// Canonical short TextGrid output; validation precedes serialization.
-pub fn write_short(g : Grid) -> String raise GridError {
-  validate(g)
+fn render_short(g : Grid) -> String {
   let b = StringBuilder()
   b.write_string("File type = \"ooTextFile short\"\n\"TextGrid\"\n")
   b.write_string("\{g.start}\n\{g.end}\n<exists>\n\{g.tiers.length()}\n")
@@ -46,8 +45,7 @@ pub fn write_short(g : Grid) -> String raise GridError {
 
 ///|
 /// Human-readable long TextGrid. Indices are presentation, not semantic tokens.
-pub fn write_long(g : Grid) -> String raise GridError {
-  validate(g)
+fn render_long(g : Grid) -> String {
   let b = StringBuilder()
   b.write_string("File type = \"ooTextFile\"\nObject class = \"TextGrid\"\n\n")
   b.write_string(
@@ -79,4 +77,16 @@ pub fn write_long(g : Grid) -> String raise GridError {
     }
   }
   b.to_string()
+}
+
+///|
+pub fn write_short(g : Grid) -> String raise GridError {
+  validate(g)
+  render_short(g)
+}
+
+///|
+pub fn write_long(g : Grid) -> String raise GridError {
+  validate(g)
+  render_long(g)
 }

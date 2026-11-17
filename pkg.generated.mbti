@@ -28,6 +28,12 @@ pub fn default_limits() -> Limits
 
 pub fn delete_point(Tier, Int32) -> Tier raise GridError
 
+pub fn document(Double, Double, Array[Tier]) -> Document raise GridError
+
+pub fn document_from_grid(Grid) -> Document raise GridError
+
+pub fn document_to_grid(Document, policy? : BridgePolicy) -> BridgeResult raise GridError
+
 pub fn encode_text(String, encoding? : TextEncoding) -> Bytes
 
 pub fn entry_count(Tier) -> Int32
@@ -72,6 +78,10 @@ pub fn parse_bytes(Bytes, limits? : Limits) -> Grid raise GridError
 
 pub fn parse_csv(String, limits? : Limits) -> Grid raise GridError
 
+pub fn parse_document(String, limits? : Limits) -> Document raise GridError
+
+pub fn parse_document_bytes(Bytes, limits? : Limits) -> Document raise GridError
+
 pub fn parse_json(String, limits? : Limits) -> Grid raise GridError
 
 pub fn parse_text(String, limits? : Limits) -> Grid raise GridError
@@ -110,11 +120,19 @@ pub fn to_json(Grid) -> Json raise GridError
 
 pub fn validate(Grid) -> Unit raise GridError
 
+pub fn validate_document(Document) -> Unit raise GridError
+
 pub fn validate_tier(Tier) -> Unit raise GridError
 
 pub fn write_bytes(Grid, encoding? : TextEncoding, short? : Bool) -> Bytes raise GridError
 
 pub fn write_csv(Grid) -> String raise GridError
+
+pub fn write_document_bytes(Document, encoding? : TextEncoding, short? : Bool) -> Bytes raise GridError
+
+pub fn write_document_long(Document) -> String raise GridError
+
+pub fn write_document_short(Document) -> String raise GridError
 
 pub fn write_json(Grid) -> String raise GridError
 
@@ -141,6 +159,31 @@ pub fn Agreement::equal(Self, Self) -> Bool
 pub fn Agreement::not_equal(Self, Self) -> Bool
 pub fn Agreement::to_repr(Self) -> @debug.Repr
 
+pub(all) enum BridgeChange {
+  GridDomain(Double, Double, Double, Double)
+  TierDomain(Int32, Double, Double, Double, Double)
+  Padding(Int32, Double, Double)
+} derive(Eq, @debug.Debug)
+pub fn BridgeChange::equal(Self, Self) -> Bool
+pub fn BridgeChange::not_equal(Self, Self) -> Bool
+pub fn BridgeChange::to_repr(Self) -> @debug.Repr
+
+pub(all) enum BridgePolicy {
+  RequireAligned
+  ExpandAndPad
+} derive(Eq, @debug.Debug)
+pub fn BridgePolicy::equal(Self, Self) -> Bool
+pub fn BridgePolicy::not_equal(Self, Self) -> Bool
+pub fn BridgePolicy::to_repr(Self) -> @debug.Repr
+
+pub(all) struct BridgeResult {
+  grid : Grid
+  changes : Array[BridgeChange]
+} derive(Eq, @debug.Debug)
+pub fn BridgeResult::equal(Self, Self) -> Bool
+pub fn BridgeResult::not_equal(Self, Self) -> Bool
+pub fn BridgeResult::to_repr(Self) -> @debug.Repr
+
 pub(all) struct Confusion {
   reference : String
   hypothesis : String
@@ -149,6 +192,15 @@ pub(all) struct Confusion {
 pub fn Confusion::equal(Self, Self) -> Bool
 pub fn Confusion::not_equal(Self, Self) -> Bool
 pub fn Confusion::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Document {
+  start : Double
+  end : Double
+  tiers : Array[Tier]
+} derive(Eq, @debug.Debug)
+pub fn Document::equal(Self, Self) -> Bool
+pub fn Document::not_equal(Self, Self) -> Bool
+pub fn Document::to_repr(Self) -> @debug.Repr
 
 pub(all) struct Grid {
   start : Double

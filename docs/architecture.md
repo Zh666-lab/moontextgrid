@@ -1,6 +1,8 @@
 # 架构与验收边界
 
-纯数据引擎：TextGrid → Grid → 校验后的操作 → TextGrid / JSON / CSV。
+纯数据引擎：TextGrid → Document（保留弱域不一致）→ 显式桥接 → Grid → 校验后的操作 → TextGrid / JSON / CSV。
+
+Document 可直接往返文本；默认桥接不修复，ExpandAndPad 取声明域与条目域并集、补外侧空白，逐项返回变更记录。不会修改原标签/时间戳。详见 compatibility.md。
 时间以有限 Double 秒表示；区间严格正长度、连续分割，点严格递增；不使用隐式近似容差修复数据。
 所有公开入口校验，编辑返回深拷贝，不修改调用者。解析预算限制输入、token、层与条目总数。
 
@@ -8,4 +10,4 @@
 不支持二进制 TextGrid、旧式 Latin-1/MacRoman、声学分析、自动语音识别/强制对齐、GUI 或文件系统副作用。
 三个工作流为语料规范化、标注片段编辑与切片、下游训练数据与双人标注对比。
 
-客观验收：Praat 官方文本 token/invariant 规格；独立 Python TextGrid 程序双向读写；Python 区间模型/CSV/JSON 对照；四后端严格检查构建测试和三个 runnable examples。
+客观验收：Praat 官方文本 token/invariant 规格；独立 Python TextGrid 程序双向读写；Python 区间模型/CSV/JSON 对照；四后端严格检查构建测试和四个 runnable examples 和实际 Praat 引擎文档对照。

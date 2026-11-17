@@ -1,11 +1,12 @@
 # MoonTextGrid
 
-纯 MoonBit 的 **Praat TextGrid 语言时间标注库**，模块为 `Zh666-lab/moontextgrid@0.1.0`，MIT 许可证。
+纯 MoonBit 的 **Praat TextGrid 语言时间标注库**，模块为 `Zh666-lab/moontextgrid@0.2.0`，MIT 许可证。
 
 语料维护者可以导入并规范化标注；媒体片段工具可以编辑、裁剪和拼接标注；语音训练与评估团队可以导出结构化数据、统计覆盖时长并比较两份标注。核心库只处理内存中的数据，不依赖音频、文件系统、Python 或外部服务。
 
 ## 已实现的能力
 
+- 文档层保留弱域不一致，显式桥接严格编辑模型并报告域调整和补白。
 - 长、短文本 TextGrid 解析及规范化输出，双引号转义、中文、多行与补充平面字符。
 - UTF-8，以及带 BOM 的 UTF-16LE / UTF-16BE 严格解码和输出；畸形编码报错。
 - 连续完整区间分区、严格有序点序列；资源预算；防御性复制。
@@ -16,7 +17,7 @@
 - 按时长加权的混淆表、一致率、Cohen kappa；一对一点匹配与内部边界匹配。
 - 版本化 JSON 与六列记录 CSV 的完整导入导出，保留空点层和重名层。
 
-不支持 Praat 二进制 TextGrid、Latin-1/MacRoman、ELAN、音频处理、自动语音识别、强制对齐、图形编辑器或磁盘读写。可以在调用端使用任意 I/O 库读取文件，再交给 `parse_bytes`。
+不支持 Praat 二进制 TextGrid、Latin-1/MacRoman、ELAN、音频处理、自动语音识别、强制对齐、图形编辑器或磁盘读写。可以在调用端使用任意 I/O 库读取文件，再交给 `parse_document_bytes`，或对已符合严格编辑模型的文件使用 `parse_bytes`。
 
 ## 环境与安装
 
@@ -40,9 +41,9 @@ moon version --all
 
 ```moonbit
 name = "demo/textgrid_consumer"
-version = "0.1.0"
+version = "0.2.0"
 import {
-  "Zh666-lab/moontextgrid@0.1.0",
+  "Zh666-lab/moontextgrid@0.2.0",
 }
 ```
 
@@ -96,6 +97,7 @@ moon run examples/evaluate
 |---|---|---|
 |`examples/import`|中文短格式 → 解析、长格式规范化、重读 → 语料统计|`import: tiers=1 entries=2 coverage=1`|
 |`examples/clips`|原始标注 → 改区间、裁剪归零、拼接 → CSV 导出并重读|`clips: start=0 end=3 entries=3`|
+|`examples/compatibility`|弱域文本 → 文档保留、显式补齐、分割编辑 → 可严格重读的文本|`compatibility: preserved=true changes=3 edited_intervals=4`|
 |`examples/evaluate`|两份区间标注 → 时长一致性与边界匹配 → JSON 导出并重读|`evaluate: observed=0.75 boundary_f1=1 exported_tiers=2`|
 
 这些示例使用公开 API 和原创合成数据；边界容差使用与输入相同的时间单位，约定通常为秒。
@@ -112,13 +114,23 @@ let clip = @tg.crop(changed, 0.5, 2.5, rebase_to_zero=true)
 let output = @tg.write_bytes(clip, encoding=Utf16LE)
 ```
 
-该片段要求输入域包含 `[0.5,2.5]` 且 1.25 严格位于一个区间内部。完整可运行输入见三个示例。[接口清单](pkg.generated.mbti) 与 [语义说明](docs/semantics.md) 说明边界、复杂度、数据所有权和错误行为。[交换格式](docs/exchange.md) 定义 JSON/CSV。
+该片段要求输入域包含 `[0.5,2.5]` 且 1.25 严格位于一个区间内部。完整可运行输入见四个示例。[接口清单](pkg.generated.mbti) 与 [语义说明](docs/semantics.md) 说明边界、复杂度、数据所有权和错误行为。[交换格式](docs/exchange.md) 定义 JSON/CSV。
 
 主要入口：`parse_text` / `parse_bytes` / `write_long` / `write_short` / `write_bytes`，`interval_tier` / `point_tier` / `grid`，`crop` / `concatenate`，`overlaps` / `summarize` / `agreement` / `match_boundaries`，`parse_json` / `write_json` / `parse_csv` / `write_csv`。
 
+## TextGrid 文档兼容与严格编辑
+
+`parse_document` / `write_document_long` / `write_document_short` 保留官方文本允许的弱域不一致：层与网格范围不同、区间首尾未覆盖层、点位于声明域之外。`document_to_grid` 默认要求已对齐；显式选择 `ExpandAndPad` 可扩展共同时间域、补外侧空白，并返回每项变更记录，再使用全部原有编辑 API。原标签与时间戳不移动、不截断。
+
+```sh
+moon run examples/compatibility
+```
+
+示例完整展示有效输入、保留输出、三条变更记录、分割编辑及最终输出。具体输入输出文件、模型约束、三类边界案例和实际 Praat 引擎验证见 [兼容与桥接说明](docs/compatibility.md)。
+
 ## 语义和限制
 
-- 本库采用严格模型：有限正时长、各层与网格同域，区间完整连续覆盖且长度为正，点时间唯一递增并在闭域内。层名可重复，以索引定位。Praat 文本也可能包含不满足这些约束的数据；本库会拒绝，不声称接受所有 Praat 可打开的文件。
+- 文档模型允许有限有序的独立声明域和域外条目，仍要求区间正长度且相邻、点时间唯一递增；严格编辑模型要求有限正时长、各层与网格同域，区间完整覆盖且点在闭域内。原 `parse_text` / `parse_bytes` 继续要求严格模型；通用导入使用 `parse_document` / `parse_document_bytes`。层名可重复，以索引定位。
 - TextGrid 按自由数值、引号字符串和存在标志读取；展示索引不影响语义，`!` 开始的行尾注释不作为数据。输出规范化布局，不保留原缩进、注释或数值字面形式。
 - 时间为 IEEE-754 Double，边界相等使用精确比较，不自动吸附。运算结果若溢出、区间塌缩或点重合，会报 `GridError`。显著不同比例的数据应先选择合适时间原点和单位。
 - 查询内部边界归右侧区间，最终右端点归最后区间；裁剪保留窗口两端的点。拼接要求层数、名称、顺序、类型相同；接缝同标签点去重，冲突标签报错。
@@ -146,7 +158,9 @@ python -m pip install -r tools/oracle-requirements.txt
 python tools/differential.py
 ```
 
-固定 `TextGridTools (tgt) 1.5`：24 份本库输出由外部读取；24 份外部生成的长/短格式向量由 MoonBit 测试读取。样本由本项目原创生成，含空标签、中文、重音字符及引号。该对照覆盖两者共同文本子集；tgt 的逐行读取方式不能验证多行标签，多行部分依据 Praat 文档和本库独立边界测试。不是对完整 Praat 桌面程序的互操作证明。[CI](https://github.com/Zh666-lab/moontextgrid/actions) 在每次推送运行四后端与独立对照。
+新增 [实际 Praat 引擎对照](docs/compatibility.md)：64 份文档/转换输出由 Praat 6.1.38 读取，32 份反向输出由 MoonBit 读取；通过 `tools/praat-requirements.txt` 安装测试依赖后运行 `python tools/praat_differential.py`。
+
+固定 `TextGridTools (tgt) 1.5`：24 份本库输出由外部读取；24 份外部生成的长/短格式向量由 MoonBit 测试读取。样本由本项目原创生成，含空标签、中文、重音字符及引号。该对照覆盖两者共同文本子集；tgt 的逐行读取方式不能验证多行标签，多行部分依据 Praat 文档和本库独立边界测试。这一 tgt 对照不覆盖全部 Praat 行为；新增引擎对照的版本与样本范围如上。[CI](https://github.com/Zh666-lab/moontextgrid/actions) 在每次推送运行四后端与独立对照。
 
 ## 来源、许可证与 AI 披露
 

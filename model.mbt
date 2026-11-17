@@ -129,7 +129,7 @@ pub fn grid(
   b : Double,
   tiers : Array[Tier],
 ) -> Grid raise GridError {
-  let g = { start: a, end: b, tiers: tiers.map(copy_tier), }
+  let g : Grid = { start: a, end: b, tiers: tiers.map(copy_tier), }
   validate(g)
   g
 }
