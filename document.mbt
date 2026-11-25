@@ -1,11 +1,12 @@
 ///|
 /// Official text document model. Declared domains need not coincide with
 /// entries or the grid. Interval adjacency and point ordering remain required.
+#derive(Debug, Eq)
 pub(all) struct Document {
   start : Double
   end : Double
   tiers : Array[Tier]
-} derive(Debug, Eq)
+}
 
 ///|
 fn document_domain(a : Double, b : Double) -> Unit raise GridError {

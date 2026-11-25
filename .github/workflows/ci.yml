@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Install verified MoonBit 0.10.16 and matching core
+      - name: Install verified MoonBit 0.10.22 and matching core
         run: |
           bash scripts/install-moon.sh "$RUNNER_TEMP/moontextgrid-toolchain"
           echo "MOON_HOME=$RUNNER_TEMP/moontextgrid-toolchain" >> "$GITHUB_ENV"

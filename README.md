@@ -1,6 +1,6 @@
 # MoonTextGrid
 
-纯 MoonBit 的 **Praat TextGrid 语言时间标注库**，模块为 `Zh666-lab/moontextgrid@0.2.0`，MIT 许可证。
+纯 MoonBit 的 **Praat TextGrid 语言时间标注库**，模块为 `Zh666-lab/moontextgrid@0.2.1`，MIT 许可证。
 
 语料维护者可以导入并规范化标注；媒体片段工具可以编辑、裁剪和拼接标注；语音训练与评估团队可以导出结构化数据、统计覆盖时长并比较两份标注。核心库只处理内存中的数据，不依赖音频、文件系统、Python 或外部服务。
 
@@ -21,13 +21,13 @@
 
 ## 环境与安装
 
-使用 **moonc 0.10.16+b1a0e846e** 及配套 core。CI 固定同一版本、校验官方归档 SHA-256，并在 Ubuntu 24.04 检查 `wasm-gc`、`wasm`、`js`、`native`。JS 需要 Node.js；native 需要 C 编译器。Windows 本地验收使用 wasm-gc/wasm/JS，Linux native 使用 GCC；没有承诺 Windows MSVC 验收。
+使用 **moonc 0.10.22+124d61d05** 及配套 core。CI 固定同一版本、校验官方归档 SHA-256，并在 Ubuntu 24.04 检查 `wasm-gc`、`wasm`、`js`、`native`。JS 需要 Node.js；native 需要 C 编译器。Windows 本地验收使用 wasm-gc/wasm/JS，Linux native 使用 GCC；没有承诺 Windows MSVC 验收。
 
 Linux x86-64 可执行：
 
 ```sh
-bash scripts/install-moon.sh "$HOME/.local/share/moontextgrid-0.10.16"
-export MOON_HOME="$HOME/.local/share/moontextgrid-0.10.16"
+bash scripts/install-moon.sh "$HOME/.local/share/moontextgrid-0.10.22"
+export MOON_HOME="$HOME/.local/share/moontextgrid-0.10.22"
 export MOON_TOOLCHAIN_ROOT="$MOON_HOME"
 export PATH="$MOON_HOME/bin:$PATH"
 moon version --all
@@ -41,9 +41,9 @@ moon version --all
 
 ```moonbit
 name = "demo/textgrid_consumer"
-version = "0.2.0"
+version = "0.2.1"
 import {
-  "Zh666-lab/moontextgrid@0.2.0",
+  "Zh666-lab/moontextgrid@0.2.1",
 }
 ```
 

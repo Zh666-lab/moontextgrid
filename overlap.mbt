@@ -1,10 +1,11 @@
 ///|
+#derive(Debug, Eq)
 pub(all) struct Overlap {
   start : Double
   end : Double
   left : String
   right : String
-} derive(Debug, Eq)
+}
 
 ///|
 /// Sweep two ordered partitions in O(n+m); zero-duration contacts are omitted.

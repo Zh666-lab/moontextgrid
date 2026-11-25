@@ -1,10 +1,11 @@
 ///|
 /// Supported explicit output encodings. UTF-16 is always written with a BOM.
+#derive(Debug, Eq)
 pub(all) enum TextEncoding {
   Utf8
   Utf16LE
   Utf16BE
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend TextEncoding with Eq::{equal, not_equal}

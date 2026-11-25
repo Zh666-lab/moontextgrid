@@ -3,6 +3,7 @@ package "Zh666-lab/moontextgrid"
 
 import {
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -40,7 +41,7 @@ pub fn entry_count(Tier) -> Int32
 
 pub fn find_tiers(Grid, String) -> Array[Int32]
 
-pub fn from_json(Json, limits? : Limits) -> Grid raise GridError
+pub fn from_json(@json.Json, limits? : Limits) -> Grid raise GridError
 
 pub fn get_tier(Grid, Int32) -> Tier raise GridError
 
@@ -116,7 +117,7 @@ pub fn tier_bounds(Tier) -> (Double, Double)
 
 pub fn tier_name(Tier) -> String
 
-pub fn to_json(Grid) -> Json raise GridError
+pub fn to_json(Grid) -> @json.Json raise GridError
 
 pub fn validate(Grid) -> Unit raise GridError
 
@@ -141,12 +142,14 @@ pub fn write_long(Grid) -> String raise GridError
 pub fn write_short(Grid) -> String raise GridError
 
 // Errors
+#derive(@debug.Debug)
 pub suberror GridError {
   Invalid(String)
-} derive(@debug.Debug)
+}
 pub fn GridError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) struct Agreement {
   duration : Double
   matching_duration : Double
@@ -154,91 +157,101 @@ pub(all) struct Agreement {
   expected : Double
   kappa : Double?
   confusion : Array[Confusion]
-} derive(Eq, @debug.Debug)
+}
 pub fn Agreement::equal(Self, Self) -> Bool
 pub fn Agreement::not_equal(Self, Self) -> Bool
 pub fn Agreement::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum BridgeChange {
   GridDomain(Double, Double, Double, Double)
   TierDomain(Int32, Double, Double, Double, Double)
   Padding(Int32, Double, Double)
-} derive(Eq, @debug.Debug)
+}
 pub fn BridgeChange::equal(Self, Self) -> Bool
 pub fn BridgeChange::not_equal(Self, Self) -> Bool
 pub fn BridgeChange::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum BridgePolicy {
   RequireAligned
   ExpandAndPad
-} derive(Eq, @debug.Debug)
+}
 pub fn BridgePolicy::equal(Self, Self) -> Bool
 pub fn BridgePolicy::not_equal(Self, Self) -> Bool
 pub fn BridgePolicy::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct BridgeResult {
   grid : Grid
   changes : Array[BridgeChange]
-} derive(Eq, @debug.Debug)
+}
 pub fn BridgeResult::equal(Self, Self) -> Bool
 pub fn BridgeResult::not_equal(Self, Self) -> Bool
 pub fn BridgeResult::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Confusion {
   reference : String
   hypothesis : String
   duration : Double
-} derive(Eq, @debug.Debug)
+}
 pub fn Confusion::equal(Self, Self) -> Bool
 pub fn Confusion::not_equal(Self, Self) -> Bool
 pub fn Confusion::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Document {
   start : Double
   end : Double
   tiers : Array[Tier]
-} derive(Eq, @debug.Debug)
+}
 pub fn Document::equal(Self, Self) -> Bool
 pub fn Document::not_equal(Self, Self) -> Bool
 pub fn Document::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Grid {
   start : Double
   end : Double
   tiers : Array[Tier]
-} derive(Eq, @debug.Debug)
+}
 pub fn Grid::equal(Self, Self) -> Bool
 pub fn Grid::not_equal(Self, Self) -> Bool
 pub fn Grid::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Interval {
   start : Double
   end : Double
   label : String
-} derive(Eq, @debug.Debug)
+}
 pub fn Interval::equal(Self, Self) -> Bool
 pub fn Interval::not_equal(Self, Self) -> Bool
 pub fn Interval::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct LabelStat {
   label : String
   duration : Double
   entries : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn LabelStat::equal(Self, Self) -> Bool
 pub fn LabelStat::not_equal(Self, Self) -> Bool
 pub fn LabelStat::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Limits {
   input_units : Int32
   tokens : Int32
   tiers : Int32
   entries : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn Limits::equal(Self, Self) -> Bool
 pub fn Limits::not_equal(Self, Self) -> Bool
 pub fn Limits::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct MatchSummary {
   matches : Array[PointMatch]
   reference_count : Int32
@@ -246,56 +259,62 @@ pub(all) struct MatchSummary {
   precision : Double
   recall : Double
   f1 : Double
-} derive(Eq, @debug.Debug)
+}
 pub fn MatchSummary::equal(Self, Self) -> Bool
 pub fn MatchSummary::not_equal(Self, Self) -> Bool
 pub fn MatchSummary::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Overlap {
   start : Double
   end : Double
   left : String
   right : String
-} derive(Eq, @debug.Debug)
+}
 pub fn Overlap::equal(Self, Self) -> Bool
 pub fn Overlap::not_equal(Self, Self) -> Bool
 pub fn Overlap::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Point {
   time : Double
   label : String
-} derive(Eq, @debug.Debug)
+}
 pub fn Point::equal(Self, Self) -> Bool
 pub fn Point::not_equal(Self, Self) -> Bool
 pub fn Point::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct PointMatch {
   reference_index : Int32
   hypothesis_index : Int32
   delta : Double
   same_label : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn PointMatch::equal(Self, Self) -> Bool
 pub fn PointMatch::not_equal(Self, Self) -> Bool
 pub fn PointMatch::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum TextEncoding {
   Utf8
   Utf16LE
   Utf16BE
-} derive(Eq, @debug.Debug)
+}
 pub fn TextEncoding::equal(Self, Self) -> Bool
 pub fn TextEncoding::not_equal(Self, Self) -> Bool
 pub fn TextEncoding::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Tier {
   Intervals(String, Double, Double, Array[Interval])
   Points(String, Double, Double, Array[Point])
-} derive(Eq, @debug.Debug)
+}
 pub fn Tier::equal(Self, Self) -> Bool
 pub fn Tier::not_equal(Self, Self) -> Bool
 pub fn Tier::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct TierSummary {
   name : String
   duration : Double
@@ -303,7 +322,7 @@ pub(all) struct TierSummary {
   labelled_entries : Int32
   labelled_duration : Double
   coverage : Double
-} derive(Eq, @debug.Debug)
+}
 pub fn TierSummary::equal(Self, Self) -> Bool
 pub fn TierSummary::not_equal(Self, Self) -> Bool
 pub fn TierSummary::to_repr(Self) -> @debug.Repr

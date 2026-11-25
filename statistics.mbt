@@ -1,11 +1,13 @@
 ///|
+#derive(Debug, Eq)
 pub(all) struct LabelStat {
   label : String
   duration : Double
   entries : Int32
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct TierSummary {
   name : String
   duration : Double
@@ -13,7 +15,7 @@ pub(all) struct TierSummary {
   labelled_entries : Int32
   labelled_duration : Double
   coverage : Double
-} derive(Debug, Eq)
+}
 
 ///|
 /// First-occurrence label ordering is deterministic, including the empty label.

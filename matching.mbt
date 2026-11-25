@@ -1,12 +1,14 @@
 ///|
+#derive(Debug, Eq)
 pub(all) struct PointMatch {
   reference_index : Int32
   hypothesis_index : Int32
   delta : Double
   same_label : Bool
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct MatchSummary {
   matches : Array[PointMatch]
   reference_count : Int32
@@ -14,7 +16,7 @@ pub(all) struct MatchSummary {
   precision : Double
   recall : Double
   f1 : Double
-} derive(Debug, Eq)
+}
 
 ///|
 /// Earliest-compatible greedy matching of sorted timestamps maximizes cardinality.

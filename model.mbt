@@ -1,42 +1,48 @@
 ///|
 /// Errors identify malformed input without including private annotation text.
+#derive(Debug)
 pub suberror GridError {
   Invalid(String)
-} derive(Debug)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct Interval {
   start : Double
   end : Double
   label : String
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct Point {
   time : Double
   label : String
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum Tier {
   Intervals(String, Double, Double, Array[Interval])
   Points(String, Double, Double, Array[Point])
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct Grid {
   start : Double
   end : Double
   tiers : Array[Tier]
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct Limits {
   input_units : Int32
   tokens : Int32
   tiers : Int32
   entries : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub fn default_limits() -> Limits {

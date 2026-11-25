@@ -1,11 +1,13 @@
 ///|
+#derive(Debug, Eq)
 pub(all) struct Confusion {
   reference : String
   hypothesis : String
   duration : Double
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct Agreement {
   duration : Double
   matching_duration : Double
@@ -13,7 +15,7 @@ pub(all) struct Agreement {
   expected : Double
   kappa : Double?
   confusion : Array[Confusion]
-} derive(Debug, Eq)
+}
 
 ///|
 /// Time-weighted categorical agreement over identical domains, including silence.

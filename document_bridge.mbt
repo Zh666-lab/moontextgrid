@@ -1,22 +1,25 @@
 ///|
+#derive(Debug, Eq)
 pub(all) enum BridgePolicy {
   RequireAligned
   ExpandAndPad
-} derive(Debug, Eq)
+}
 
 ///|
 /// Tier indices are zero based. Padding always has an empty label.
+#derive(Debug, Eq)
 pub(all) enum BridgeChange {
   GridDomain(Double, Double, Double, Double)
   TierDomain(Int32, Double, Double, Double, Double)
   Padding(Int32, Double, Double)
-} derive(Debug, Eq)
+}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct BridgeResult {
   grid : Grid
   changes : Array[BridgeChange]
-} derive(Debug, Eq)
+}
 
 ///|
 /// RequireAligned never repairs data. ExpandAndPad takes the union of all
